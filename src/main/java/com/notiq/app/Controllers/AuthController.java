@@ -30,6 +30,11 @@ public class AuthController {
         return "Hey we are alive";
     }
 
+    @GetMapping("namaste")
+    public String namaste() {
+        return "namaste!!";
+    }
+
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
         return authService.register(user);
