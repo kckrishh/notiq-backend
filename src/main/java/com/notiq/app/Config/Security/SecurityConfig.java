@@ -54,7 +54,7 @@ public class SecurityConfig {
                         .invalidSessionUrl("http://localhost:4200/auth/login")
                         .maximumSessions(1)
                         .expiredUrl("http://localhost:4200/auth/login"))
-                .logout(logout -> logout // Add explicit logout configuration
+                .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
@@ -65,14 +65,15 @@ public class SecurityConfig {
                             response.getWriter().write("Logged out successfully");
                             System.out.println("logged out successfully");
                         }))
-                .authorizeHttpRequests(c -> c.requestMatchers(HttpMethod.POST, "/auth/register").permitAll())
-                .authorizeHttpRequests(c -> c.requestMatchers(HttpMethod.POST, "/auth/login").permitAll())
-                .authorizeHttpRequests(c -> c.requestMatchers(HttpMethod.POST, "/auth/forgot-password").permitAll())
-                .authorizeHttpRequests(c -> c.requestMatchers(HttpMethod.POST, "/auth/reset-password").permitAll())
-                .authorizeHttpRequests(c -> c.requestMatchers(HttpMethod.GET, "/auth/hello").permitAll())
-                .authorizeHttpRequests(c -> c.requestMatchers(HttpMethod.GET, "/auth/confirm").permitAll()
+                .authorizeHttpRequests(c -> c
+                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/forgot-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/reset-password").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/hello").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/confirm").permitAll()
                         .anyRequest().authenticated())
-                .csrf(c -> c.disable());
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
