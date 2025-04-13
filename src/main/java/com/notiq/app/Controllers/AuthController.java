@@ -14,7 +14,6 @@ import com.notiq.app.Model.User;
 import com.notiq.app.Service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,6 +23,11 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    @GetMapping("hello")
+    public String hello() {
+        return "Hey we are alive";
     }
 
     @PostMapping("/register")
