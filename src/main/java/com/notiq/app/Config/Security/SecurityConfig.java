@@ -83,7 +83,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:4200");
-        config.addAllowedOrigin("https://your-frontend.netlify.app");
+        config.addAllowedOrigin("https://notiq-app.netlify.app");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
