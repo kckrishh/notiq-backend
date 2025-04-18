@@ -68,7 +68,7 @@ public class AuthService {
             message = "Invalid or expired verification link.";
             String encodedMessage = UriUtils.encode(message, StandardCharsets.UTF_8);
             String redirectUrl = String.format(
-                    "http://localhost:4200/auth/confirmation?valid=%s&message=%s",
+                    "https://notiq-app.netlify.app/auth/confirmation?valid=%s&message=%s",
                     isValid,
                     encodedMessage);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).location(URI.create(redirectUrl)).build();
@@ -80,7 +80,7 @@ public class AuthService {
                 message = "Account already verified. Please log in.";
                 String encodedMessage = UriUtils.encode(message, StandardCharsets.UTF_8);
                 String redirectUrl = String.format(
-                        "http://localhost:4200/auth/confirmation?valid=%s&message=%s",
+                        "https://notiq-app.netlify.app/auth/confirmation?valid=%s&message=%s",
                         isValid,
                         encodedMessage);
                 return ResponseEntity.status(HttpStatus.CONFLICT).location(URI.create(redirectUrl)).build();
@@ -97,8 +97,12 @@ public class AuthService {
         }
 
         String encodedMessage = UriUtils.encode(message, StandardCharsets.UTF_8);
+        // String redirectUrl = String.format(
+        // "http://localhost:4200/auth/confirmation?valid=%s&message=%s",
+        // isValid,
+        // encodedMessage);
         String redirectUrl = String.format(
-                "http://localhost:4200/auth/confirmation?valid=%s&message=%s",
+                "https://notiq-app.netlify.app/auth/confirmation?valid=%s&message=%s",
                 isValid,
                 encodedMessage);
 
