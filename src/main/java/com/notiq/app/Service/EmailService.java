@@ -93,7 +93,7 @@ public class EmailService {
 
   public void sendVerificationEmail(String toEmail, String token) {
     // String link = "http://localhost:8080/auth/confirm?token=" + token;
-    String link = "https://notiq-app.netlify.app/auth/confirm?token=" + token;
+    String link = "https://notiq-backend.onrender.com/auth/confirm?token=" + token;
     try {
       MimeMessage message = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(message, true);
