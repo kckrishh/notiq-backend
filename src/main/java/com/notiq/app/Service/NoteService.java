@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.notiq.app.Dtos.NoteRequestDto;
 import com.notiq.app.Dtos.NoteResponseDto;
+import com.notiq.app.Dtos.NoteSummaryDto;
 import com.notiq.app.Model.Note;
 import com.notiq.app.Model.User;
 import com.notiq.app.Repo.NoteRepo;
@@ -215,6 +216,25 @@ public class NoteService {
         }
     }
 
+    public ResponseEntity<String> deleteNote(int id) {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String email = auth.getName();
+
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+            Note note = noteRepository.findById(id).orElseThrow(() -> new RuntimeException("Note not found"));
+
+            if (!note.getUser().getId().equals(user.getId())) {
+                return ResponseEntity.status(403).body("Unauthorized to delete this note");
+            }
+
+            noteRepository.delete(note);
+            return ResponseEntity.ok("Note deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting note: " + e.getMessage());
+        }
+    }
+
     public ResponseEntity<List<NoteResponseDto>> getAllArchivedNotes() {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -241,6 +261,26 @@ public class NoteService {
             List<Note> notes = noteRepository.findByUserIdAndIsTrashedTrue(user.getId());
             List<NoteResponseDto> noteResponseDto = notes.stream().map(this::mapResponseDto).toList();
             return ResponseEntity.ok(noteResponseDto);
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    public ResponseEntity<NoteSummaryDto> getNoteSummary() {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String email = auth.getName();
+
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+            long total = noteRepository.countByUserId(user.getId());
+            long archived = noteRepository.countByUserIdAndIsArchivedTrue(user.getId());
+            long favorite = noteRepository.countByUserIdAndIsFavoriteTrue(user.getId());
+            long trashed = noteRepository.countByUserIdAndIsTrashedTrue(user.getId());
+
+            return ResponseEntity.ok(new NoteSummaryDto(total, archived, favorite, trashed));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).build();

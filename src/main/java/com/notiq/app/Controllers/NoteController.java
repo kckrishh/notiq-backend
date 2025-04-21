@@ -3,6 +3,7 @@ package com.notiq.app.Controllers;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.notiq.app.Dtos.NoteRequestDto;
 import com.notiq.app.Dtos.NoteResponseDto;
-
+import com.notiq.app.Dtos.NoteSummaryDto;
 import com.notiq.app.Service.NoteService;
 
 @RestController
@@ -51,10 +52,22 @@ public class NoteController {
         return noteService.toggleTrash(id);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteNote(@PathVariable Integer id) {
+        return noteService.deleteNote(id);
+    }
+
     // Get notes
     @GetMapping
     public ResponseEntity<List<NoteResponseDto>> getAllNotes() {
         return noteService.getAllActiveNotes();
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<NoteSummaryDto> getNoteSummary() {
+        System.out.println("Fetching all notes");
+
+        return noteService.getNoteSummary();
     }
 
     @GetMapping("/dashboard")

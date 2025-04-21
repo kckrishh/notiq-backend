@@ -16,4 +16,12 @@ public interface NoteRepo extends JpaRepository<Note, Integer> {
     List<Note> findByUserIdAndIsArchivedFalseAndIsTrashedFalse(Integer id);
 
     List<Note> findTop6ByUserIdAndIsArchivedFalseAndIsTrashedFalseOrderByCreatedAtDesc(Integer id);
+
+    long countByUserId(Integer userId);
+
+    long countByUserIdAndIsFavoriteTrue(Integer userId);
+
+    long countByUserIdAndIsArchivedTrue(Integer userId);
+
+    long countByUserIdAndIsTrashedTrue(Integer userId);
 }
